@@ -1,0 +1,1 @@
+Introduces learners to object-oriented programming using classes and objects in Python. Project also handles attributes, methods, and properties as well as data abstraction, data encapsulation, and information hiding.
