@@ -1,0 +1,83 @@
+The ``7-base_geometry`` module
+======================
+
+Function import from module:
+        >>> BG = __import__("7-base_geometry").BaseGeometry
+
+Tests for docstring in module:
+         >>> m = __import__("7-base_geometry").__doc__
+         >>> len(m) > 1
+         True
+
+Tests for class docstring:
+         >>> c_lass = __import__("7-base_geometry").BaseGeometry.__doc__
+         >>> len(c_lass) > 1
+         True
+
+Tests for method docstring:
+	 >>> mthd1 = __import__("7-base_geometry").BaseGeometry.area.__doc__
+	 >>> len(mthd1) > 1
+	 True
+	 >>> mthd2 = __import__("7-base_geometry").BaseGeometry.integer_validator.__doc__
+         >>> len(mthd2) > 1
+         True
+
+Tests for area failure:
+	 >>> b = BG()
+	 >>> b.area()
+	 Traceback (most recent call last):
+	 ...
+	 Exception: area() is not implemented
+
+Tests too many arguments for area:
+	 >>> b.area(1)
+	 Traceback (most recent call last):
+         ...
+	 TypeError: area() takes 1 positional argument but 2 were given
+
+Tests int validator that passes integer:
+	 >>> b.integer_validator("integer", 1)
+
+Tests for integer == 0:
+	 >>> b.integer_validator("integer", 0)
+	 Traceback (most recent call last):
+         ...
+         ValueError: integer must be greater than 0
+
+Tests for integer < 0;
+	 >>> b.integer_validator("integer", -5)
+	 Traceback (most recent call last):
+         ...
+         ValueError: integer must be greater than 0
+
+Tests for non-integer types:
+	 >>> b.integer_validator("bool", True)
+	 Traceback (most recent call last):
+         ...
+         TypeError: bool must be an integer
+	 >>> b.integer_validator("float", 1.5)
+         Traceback (most recent call last):
+         ...
+         TypeError: float must be an integer
+	 >>> b.integer_validator("complex", complex(1, 1))
+         Traceback (most recent call last):
+         ...
+         TypeError: complex must be an integer
+
+Tests for no arguments to integer_validator:
+	 >>> b.integer_validator()
+	 Traceback (most recent call last):
+         ...
+	 TypeError: integer_validator() missing 2 required positional arguments: 'name' and 'value'
+
+Tests only 1 argument to integer_validator:
+	 >>> b.integer_validator("integer")
+	 Traceback (most recent call last):
+         ...
+	 TypeError: integer_validator() missing 1 required positional argument: 'value'
+
+Tests for too many arguments:
+	 >>> b.integer_validator("integer", 1, 2)
+	 Traceback (most recent call last):
+         ...
+ TypeError: integer_validator() takes 3 positional arguments but 4 were given
