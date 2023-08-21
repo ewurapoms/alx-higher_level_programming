@@ -45,3 +45,8 @@ class Square(Rectangle):
         """defines a dict"""
         return {'x': self.x, 'y': self.y,
                 'id': self.id, 'size': self.height}
+
+    def __str__(self):
+        """Overwritting the str method"""
+        return "[Square] ({}) {}/{} - {}".format(self.id, self.x, self.y,
+                                                 self.width)
