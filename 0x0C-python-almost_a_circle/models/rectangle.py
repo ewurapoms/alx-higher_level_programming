@@ -113,18 +113,34 @@ class Rectangle(Base):
             print("")
 
     def update(self, *args, **kwargs):
-        """updates prev definitions"""
-        listAtrbs = ["id", "_Rect_width", "_Rect_height", "_Rect_x", "_Rect_y"]
-        ele = 0
-        for arg in args:
-            if ele == len(listAtrbs):
-                break
-            setattr(self, listAtrbs[ele], arg)
-            ele = ele + 1
-        if ele == 0:
-            for key, val in kwargs.items():
-                if hasattr(self, key):
-                    setattr(self, key, val)
+        """
+        Args:
+        *args (int): new arguments assigned to attributes
+            1st argument = id attribute
+            2nd argument = width attribute
+            3rd argument = height attribute
+            4th argument = x attribute
+            5th argument = y attribute
+        **kwargs (dict): key/value pairs of attributes
+        """
+        if args and len(args) != 0:
+            attr = 0
+            for arg in args:
+                if attr == 0:
+                    self.id = arg
+                elif attr == 1:
+                    self.width = arg
+                elif attr == 2:
+                    self.height = arg
+                elif attr == 3:
+                    self.x = arg
+                elif attr == 4:
+                    self.y = arg
+                attr += 1
+
+        elif kwargs and len(kwargs) != 0:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
 
     def to_dictionary(self):
         """displays dictionary"""

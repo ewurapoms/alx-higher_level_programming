@@ -2,6 +2,8 @@
 """ Defines a Class Base """
 
 import json
+import csv
+import turtle
 
 
 class Base:
@@ -34,13 +36,14 @@ class Base:
     @classmethod
     def save_to_file(cls, list_objs):
         """save json rep to file"""
-        dictList = []
-        for cases in list_objs:
-            dictList.append(cases.to_dictionary())
-        info = cls.to_json_string(dictList)
-        filename = cls.__name__ + ".json"
-        with open(filename, 'w+') as f:
-            f.write(info)
+        filename = str(cls.__name__) + ".json"
+
+        with open(filename, "w") as file:
+            if list_objs is None:
+                file.write("[]")
+            else:
+                json_list = [obj.to_dictionary() for obj in list_objs]
+                file.write(Base.to_json_string(json_list))
 
     @staticmethod
     def from_json_string(json_string):
@@ -57,9 +60,16 @@ class Base:
     @classmethod
     def create(cls, **dictionary):
         """Returns an instance with all attributes already set"""
-        temp = cls(1, 1)
-        temp.update(**dictionary)
-        return temp
+        if dictionary and dictionary != {}:
+            if cls.__name__ == "Rectangle":
+                dummy = cls(1, 1)
+            elif cls.__name__ == "Square":
+                dummy = cls(1)
+            else:
+                dummy = None
+
+        dummy.update(**dictionary)
+        return dummy
 
     @classmethod
     def load_from_file(cls):
@@ -75,4 +85,76 @@ class Base:
         cases = []
         for i in dictList:
             cases.append(cls.create(**i))
-        return cases
+            return cases
+
+    @classmethod
+    def save_to_file_csv(cls, list_objs):
+        """Saves CSV rep of list_objs to <class-name>.json"""
+        filename = cls.__name__ + ".csv"
+        with open(filename, "w", newline="") as csvfile:
+            if list_objs is None or list_objs == []:
+                csvfile.write("[]")
+            else:
+                if cls.__name__ == "Rectangle":
+                    fieldnames = ["id", "width", "height", "x", "y"]
+                else:
+                    fieldnames = ["id", "size", "x", "y"]
+                wprint = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                for obj in list_objs:
+                    wprint.writerow(obj.to_dictionary())
+
+    @classmethod
+    def load_from_file_csv(cls):
+        """Prints new class instances from a CSV file
+
+        Returns:
+            If the file does not exist - an empty list
+            Otherwise - a list of instantiated classes
+        """
+        filename = cls.__name__ + ".csv"
+        try:
+            with open(filename, newline="") as csvfile:
+                if cls.__name__ == "Rectangle":
+                    fieldnames = ["id", "width", "height", "x", "y"]
+                else:
+                    fieldnames = ["id", "size", "x", "y"]
+                dictList = csv.DictReader(csvfile, fieldnames=fieldnames)
+                dictList = [dict([key, int(val)] for key, val in d.items())
+                            for d in dictList]
+                return [cls.create(**d) for d in dictList]
+        except IOError:
+            return []
+
+    @staticmethod
+    def draw(list_rectangles, list_squares):
+        """Shows a window that can draw all the Rectangles and Squares"""
+        turtle.Screen().screensize(800, 600)
+        turtle.Screen().title("Turtle Drawing")
+        turtle.speed(1)
+        turtle.bgcolor("FFFF00")
+        screen = turtle.Screen()
+        screen.title("Drawing Rectangles and Squares")
+        turt = turtle.Turtle()
+
+        for rectangle in list_rectangles:
+            turt.penup()
+            turt.goto(rectangle.x, rectangle.y)
+            turt.pendown()
+            turt.color("#0000FF")
+            for _ in range(2):
+                turt.forward(rectangle.width)
+                turt.left(90)
+                turt.forward(rectangle.height)
+                turt.left(90)
+
+        for square in list_squares:
+            turt.penup()
+            turt.goto(square.x, square.y)
+            turt.pendown()
+            turt.color("#008000")
+            for _ in range(4):
+                turt.forward(square.width)
+                turt.left(90)
+                turt.hideturtle()
+
+        screen.exitonclick()
