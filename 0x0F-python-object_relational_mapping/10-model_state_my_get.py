@@ -4,9 +4,9 @@ prints the State object with the name passed as
 argument from the database hbtn_0e_6_usa"""
 
 import sys
+from sqlalchemy.orm import Session
 from model_state import Base, State
-from sqlalchemy import (create_engine)
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 
 if __name__ == "__main__":
@@ -20,7 +20,7 @@ if __name__ == "__main__":
                             pool_pre_ping=True
                                 )
     session = Session(engine)
-    pair = sys.argv[4]
+    match = sys.argv[4]
     attr = session.query(State).filter_by(name=match).first()
     if attr is not None:
         print(str(attr.id))
