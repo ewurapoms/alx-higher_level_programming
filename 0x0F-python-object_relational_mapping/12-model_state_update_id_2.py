@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-""" """
+"""updates the State object from the database
+"""
 import sys
 from model_state import Base, State
-from sqlalchemy import create_engine
+from sqlalchemy import (create_engine)
 from sqlalchemy.orm import sessionmaker
 
 
