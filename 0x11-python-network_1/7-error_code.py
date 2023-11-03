@@ -16,4 +16,4 @@ if __name__ == "__main__":
         print(f"{res.text}")
 
     except requests.exceptions.HTTPError as err:
-        print("Error code: {}".format(err.status_code))
+        print(f"Error code: {err.response.status_code}")
