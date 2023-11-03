@@ -1,19 +1,16 @@
 #!/usr/bin/python3
-""" 
-script lists 10 most recent commits 
+"""script lists 10 most recent commits
 data from a GitHub repository
 """
-
 import sys
 import requests
 
 
 if __name__ == "__main__":
 
-    author = sys.argv[1]
+    auth = sys.argv[1]
     repo = sys.argv[2]
-    url = 'https://api.github.com/repos/{}/{}/commits'.format(author,
-                                                                repo)
+    url = 'https://api.github.com/repos/{}/{}/commits'.format(auth, repo)
 
     data = requests.get(url)
     commits = data.json()
