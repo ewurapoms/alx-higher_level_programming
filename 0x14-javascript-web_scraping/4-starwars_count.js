@@ -7,7 +7,7 @@ request(URL, function (error, response, body) {
     const results = JSON.parse(body).results;
     const charWedge = results.reduce((count, movie) => {
       return movie.characters.find((character) => character.includes('18'))
-        ? count+ 1
+        ? count + 1
         : count;
     }, 0);
     console.log(charWedge);
